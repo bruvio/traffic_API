@@ -107,7 +107,7 @@ class Record(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "{}: {}".format(self.year, self.road)
+        return "{}: {}".format(self.date.year, self.road)
 
 
 class Count(models.Model):
@@ -125,3 +125,4 @@ class Count(models.Model):
     hgvs_3_or_4_articulated_axle = models.IntegerField()
     hgvs_5_articulated_axle = models.IntegerField()
     hgvs_6_articulated_axle = models.IntegerField()
+    
