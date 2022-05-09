@@ -49,11 +49,13 @@ class DetailedCountMethod(models.Model):
     def __str__(self):
         return self.method
 
+
 class Direction(models.Model):
     name = models.CharField(max_length=10)
 
     def __str__(self):
         return self.name
+
 
 models.CASCADE
 
@@ -61,18 +63,22 @@ models.CASCADE
 class RoadInfo(models.Model):
     road = models.ForeignKey(RoadName, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    direction = models.ForeignKey(Direction,on_delete=models.CASCADE)
+    direction = models.ForeignKey(Direction, on_delete=models.CASCADE)
     junc_start = models.ForeignKey(
         StartJunction,
         on_delete=models.CASCADE,
-        related_name="start_junction_road_name",null=True, blank=True
+        related_name="start_junction_road_name",
+        null=True,
+        blank=True,
     )
     junc_end = models.ForeignKey(
         EndJunction,
         on_delete=models.CASCADE,
-        related_name="end_junction_road_name",null=True, blank=True
+        related_name="end_junction_road_name",
+        null=True,
+        blank=True,
     )
-    
+
     len_mi = models.FloatField(null=True, blank=True)
     len_km = models.FloatField(null=True, blank=True)
 
@@ -132,4 +138,3 @@ class Count(models.Model):
     hgvs_3_or_4_articulated_axle = models.IntegerField()
     hgvs_5_articulated_axle = models.IntegerField()
     hgvs_6_articulated_axle = models.IntegerField()
-    
