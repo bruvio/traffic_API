@@ -1,12 +1,15 @@
-from API.models import *
 from rest_framework import serializers
+
+from API.models import CountMethod, Date, Location, Record, RoadInfo
+
 
 class DateSerializer(serializers.ModelSerializer):
     year = serializers.IntegerField()
 
     class Meta:
         model = Date
-        exclude = ('id',)
+        exclude = ("id",)
+
 
 class RoadSerializer(serializers.ModelSerializer):
     road_name = serializers.CharField()
@@ -18,7 +21,8 @@ class RoadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RoadInfo
-        exclude = ('id',)
+        exclude = ("id",)
+
 
 class LocationSerializer(serializers.ModelSerializer):
     count_point_ref = serializers.IntegerField()
@@ -29,7 +33,8 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        exclude = ('id',)
+        exclude = ("id",)
+
 
 class CountMethodSerializer(serializers.ModelSerializer):
     basic_count_method = serializers.CharField()
@@ -37,7 +42,7 @@ class CountMethodSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CountMethod
-        exclude = ('id',)
+        exclude = ("id",)
 
 
 class CountSerializer(serializers.ModelSerializer):
@@ -58,7 +63,8 @@ class CountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Count
-        exclude = ('id', 'record')
+        exclude = ("id", "record")
+
 
 class RecordSerializer(serializers.ModelSerializer):
     road = RoadSerializer()
@@ -69,4 +75,4 @@ class RecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Record
-        exclude = ('id',)
+        exclude = ("id",)

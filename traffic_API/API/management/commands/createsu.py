@@ -17,4 +17,6 @@ class Command(BaseCommand):
             get_user_model().objects.create_superuser(
                 email=admin_email, password=admin_password, name=admin
             )
-            self.stdout.write(self.style.SUCCESS("Successfully created superuser"))
+            self.stdout.write(
+                self.style.SUCCESS("Successfully created superuser")
+            )

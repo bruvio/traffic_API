@@ -17,5 +17,25 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+]
+
+
+from django.contrib import admin
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+
+from API import views
+
+router = DefaultRouter()
+router.get_api_root_view().cls.__doc__ = '<a href="{}">A (Django) RESTful API providing traffic data count and major road data.</a>'.format(
+    "https://github.com/bruvio/traffic_API"
+)
+
+router.register(r"count", views.CountViewSet)
+
+
+urlpatterns = [
+    path("", include(router.urls)),
+    path("admin/", admin.site.urls),
 ]
