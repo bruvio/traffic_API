@@ -10,6 +10,8 @@ Django = "^4.0.4"
 djangorestframework = "^3.13.1"
 django-filter = "^21.1"
 psycopg2-binary = "^2.9.3"
+python-decouple = "^3.6"
+convertbng = "^0.6.38"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

@@ -12,7 +12,6 @@ export SECRET_KEY='django-insecure-w=jp7h*^7occppycw4l6a*&ja%#=0_#_qwr=_&krq8e@@
 # python manage.py wait_for_db
 python3 manage.py makemigrations API
 python3 manage.py migrate
-python3 manage.py createsu
 # python manage.py collectstatic --noinput
 python manage.py flush
 python3 manage.py runserver

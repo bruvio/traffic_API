@@ -12,6 +12,11 @@ def test_road_model():
     assert str(road) == road.name
 
 
+def test_direction_model():
+    direction = models.Direction.objects.create(name="east")
+    assert str(direction) == direction.name
+
+
 def test_date_model():
     """Test the date string representation"""
     date = models.Date.objects.create(year="1990")
@@ -51,13 +56,15 @@ def test_roadinfo_model():
     cat = models.Category.objects.create(name="not_a_road")
     start_junction = models.StartJunction.objects.create(name="not_a_road")
     junc_end = models.EndJunction.objects.create(name="not_a_road")
-    roadinfo = models.RoadInfo.objects.create(road=road,category=cat,junc_start=start_junction,junc_end=junc_end,len_mi=1,len_km=1.6)
+    direction = models.Direction.objects.create(name="east")
+    roadinfo = models.RoadInfo.objects.create(road=road,category=cat,direction=direction,junc_start=start_junction,junc_end=junc_end,len_mi=1,len_km=1.6)
     assert str(roadinfo.road.name) == road.name
     assert str(roadinfo.junc_start.name) == start_junction.name
     assert str(roadinfo.junc_end.name) == junc_end.name
     assert str(roadinfo.category.name) == cat.name
     assert str(roadinfo.len_mi) == str(1)
     assert str(roadinfo.len_km) == str(1.6)
+    assert str(roadinfo.direction) == direction.name
 
 
 def test_location_model():
@@ -82,7 +89,8 @@ def test_record_model():
     cat = models.Category.objects.create(name="not_a_road")
     start_junction = models.StartJunction.objects.create(name="not_a_road")
     junc_end = models.EndJunction.objects.create(name="not_a_road")
-    roadinfo = models.RoadInfo.objects.create(road=road,category=cat,junc_start=start_junction,junc_end=junc_end,len_mi=1,len_km=1.6)
+    direction = models.Direction.objects.create(name="east")
+    roadinfo = models.RoadInfo.objects.create(road=road,category=cat,direction=direction,junc_start=start_junction,junc_end=junc_end,len_mi=1,len_km=1.6)
     date = models.Date.objects.create(year=1990)
     basic_count_method = models.BasicCountMethod.objects.create(
         method="not_a_road"
@@ -90,6 +98,8 @@ def test_record_model():
     detailed_count_method = models.DetailedCountMethod.objects.create(
         method="not_a_road_detailed"
     )
+    direction = models.Direction.objects.create(name="east")
+    roadinfo = models.RoadInfo.objects.create(road=road,category=cat,direction=direction,junc_start=start_junction,junc_end=junc_end,len_mi=1,len_km=1.6)
     count_method = models.CountMethod.objects.create(basic_count_method=basic_count_method,detailed_count_method=detailed_count_method
     )
     location = models.Location.objects.create(count_point_ref=1,easting=1,latitude=9,northing=12,longitude=12)
@@ -102,7 +112,8 @@ def test_count_model():
     cat = models.Category.objects.create(name="not_a_road")
     start_junction = models.StartJunction.objects.create(name="not_a_road")
     junc_end = models.EndJunction.objects.create(name="not_a_road")
-    roadinfo = models.RoadInfo.objects.create(road=road,category=cat,junc_start=start_junction,junc_end=junc_end,len_mi=1,len_km=1.6)
+    direction = models.Direction.objects.create(name="east")
+    roadinfo = models.RoadInfo.objects.create(road=road,category=cat,direction=direction,junc_start=start_junction,junc_end=junc_end,len_mi=1,len_km=1.6)
     date = models.Date.objects.create(year=1990)
     basic_count_method = models.BasicCountMethod.objects.create(
         method="not_a_road"

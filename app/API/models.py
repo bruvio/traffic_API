@@ -49,6 +49,11 @@ class DetailedCountMethod(models.Model):
     def __str__(self):
         return self.method
 
+class Direction(models.Model):
+    name = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.name
 
 models.CASCADE
 
@@ -56,6 +61,7 @@ models.CASCADE
 class RoadInfo(models.Model):
     road = models.ForeignKey(RoadName, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    direction = models.ForeignKey(Direction,on_delete=models.CASCADE)
     junc_start = models.ForeignKey(
         StartJunction,
         on_delete=models.CASCADE,
@@ -66,6 +72,7 @@ class RoadInfo(models.Model):
         on_delete=models.CASCADE,
         related_name="end_junction_road_name",
     )
+    
     len_mi = models.FloatField()
     len_km = models.FloatField()
 
