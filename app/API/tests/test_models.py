@@ -1,52 +1,47 @@
-from unittest.mock import patch
-
 import pytest
-
 
 from API import models
 
 pytestmark = pytest.mark.django_db
 
 
-
-
 def test_road_model():
     """Test the road string representation"""
-    road = models.RoadName.objects.create(name="magdalen")
-    
+    road = models.RoadName.objects.create(name="magdalen_road")
+
     assert str(road) == road.name
+
 
 def test_date_model():
     """Test the date string representation"""
-    date = models.Date.objects.create(name=1990)
+    date = models.Date.objects.create(year="1990")
     assert str(date) == date.year
 
 
-
-# def test_ingredient_str():
-#     """Test the ingredient string representation"""
-#     ingredient = models.Ingredient.objects.create(
-#         user=sample_user(), name="Fennel"
-#     )
-
-#     assert str(ingredient) == ingredient.name
+def test_category_model():
+    cat = models.Category.objects.create(name="not_a_road")
+    assert str(cat) == cat.name
 
 
-# def test_recipe_str():
-#     """Test the recipe string representation"""
-#     recipe = models.Recipe.objects.create(
-#         user=sample_user(), title="pizza", time_minutes=240, price=10.0
-#     )
-
-#     assert str(recipe) == recipe.title
+def test_StartJunction_model():
+    StartJunction = models.StartJunction.objects.create(name="not_a_road")
+    assert str(StartJunction) == StartJunction.name
 
 
-# @patch("uuid.uuid4")
-# def test_recipe_file_name_uuid(mock_uuid):
-#     """Test that image is saved in the correct location"""
-#     uuid = "test-uuid"
-#     mock_uuid.return_value = uuid
-#     file_path = models.recipe_image_file_path(None, "myimage.jpg")
-#     exp_path = f"uploads/recipe/{uuid}.jpg"
+def test_EndJunction_model():
+    EndJunction = models.EndJunction.objects.create(name="not_a_road")
+    assert str(EndJunction) == EndJunction.name
 
-#     assert file_path == exp_path
+
+def test_BasicCountMethod_model():
+    BasicCountMethod = models.BasicCountMethod.objects.create(
+        method="not_a_road"
+    )
+    assert str(BasicCountMethod) == BasicCountMethod.method
+
+
+def test_DetailedCountMethod_model():
+    DetailedCountMethod = models.DetailedCountMethod.objects.create(
+        method="not_a_road"
+    )
+    assert str(DetailedCountMethod) == DetailedCountMethod.method

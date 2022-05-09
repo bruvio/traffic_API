@@ -17,6 +17,9 @@ isort = "^5.10.1"
 pytest = "^7.1.2"
 pre-commit = "^2.19.0"
 pep8-naming = "^0.12.1"
+pytest-cov = "^3.0.0"
+pytest-django = "^4.5.2"
+pytest-flake8 = "^1.1.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
