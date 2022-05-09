@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django_filters import rest_framework as filters
 from rest_framework import viewsets
 
@@ -16,16 +15,16 @@ class CountViewSet(viewsets.ReadOnlyModelViewSet):
         "road",
         "date",
         "count_method",
-        "count_method_basic_count_method",
-        "count_method_detailed_count_method",
+        "count_method__basic_count_method",
+        "count_method__detailed_count_method",
         "location",
-        "road_category",
-        "road_junc_start",
-        "road_junc_end",
-        "road_road__name",
-        "date_year",
-        "location_count_point_ref",
-        "road_category__name",
-        "road_junc_start__name",
-        "road_junc_end__name",
+        "road__category",
+        "road__junc_start",
+        "road__junc_end",
+        "road__road__name",
+        "date__year",
+        "location__count_point_ref",
+        "road__category__name",
+        "road__junc_start__name",
+        "road__junc_end__name",
     )

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from API.models import CountMethod, Date, Location, Record, RoadInfo
+from API.models import Count, CountMethod, Date, Location, Record, RoadInfo
 
 
 class DateSerializer(serializers.ModelSerializer):
