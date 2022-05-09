@@ -65,12 +65,12 @@ class RoadInfo(models.Model):
     junc_start = models.ForeignKey(
         StartJunction,
         on_delete=models.CASCADE,
-        related_name="start_junction_road_name",
+        related_name="start_junction_road_name",null=True, blank=True
     )
     junc_end = models.ForeignKey(
         EndJunction,
         on_delete=models.CASCADE,
-        related_name="end_junction_road_name",
+        related_name="end_junction_road_name",null=True, blank=True
     )
     
     len_mi = models.FloatField(null=True, blank=True)

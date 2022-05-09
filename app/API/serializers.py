@@ -12,10 +12,11 @@ class DateSerializer(serializers.ModelSerializer):
 
 
 class RoadSerializer(serializers.ModelSerializer):
-    road_name = serializers.CharField()
-    road_category = serializers.CharField()
-    start_junction_road_name = serializers.CharField()
-    end_junction_road_name = serializers.CharField()
+    road = serializers.CharField()
+    category = serializers.CharField()
+    direction = serializers.CharField()
+    junc_start = serializers.CharField()
+    junc_end = serializers.CharField()
     len_mi = serializers.FloatField()
     len_km = serializers.FloatField()
 
