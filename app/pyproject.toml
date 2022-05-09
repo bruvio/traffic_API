@@ -46,14 +46,8 @@ use_parentheses = true
 line-length = 79
 
 [tool.pytest.ini_options]
-addopts = '-s -v --cov=data_pipeline_api  --cov-report=html --cov-report=term --cov-report=xml:cov.xml'
-markers = [
-  "pipeline: tests for 'pipeline' module ",
-  "issue: tests for raising issues ",
-  "utilities: tests for 'utilities' functions ",
-  "apiversion: tests for api versioning ",
-  "netcdf: tests for netcdf files ",
-]
+addopts = '-s -v --cov-report=html --cov-report=term --cov-report=xml:cov.xml --cov=API'
+DJANGO_SETTINGS_MODULE = "traffic_API.settings"
 
 [tool.mypy]
 disallow_untyped_calls = true
