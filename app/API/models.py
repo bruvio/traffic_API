@@ -73,8 +73,8 @@ class RoadInfo(models.Model):
         related_name="end_junction_road_name",
     )
     
-    len_mi = models.FloatField()
-    len_km = models.FloatField()
+    len_mi = models.FloatField(null=True, blank=True)
+    len_km = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return str(self.road)
