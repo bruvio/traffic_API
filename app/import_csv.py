@@ -27,7 +27,7 @@ from API.models import (
 df = pd.read_csv("data/input_data.csv")
 
 
-def create_records(num=100):
+def create_records(num=99):
     """
     create_records populate database with data from csv file
 
@@ -107,8 +107,8 @@ def create_records(num=100):
         )
 
         print(
-            "row n {} longitude {}, latitude{}".format(
-                records, longitude, latitude
+            "row n {} - road name {} longitude {}, latitude {}".format(
+                records, road_name_obj.name, longitude, latitude
             )
         )
         if num and records == num:
