@@ -36,7 +36,7 @@ def create_records(num=99):
     num : int, optional
         defult number of row that are going to be imported, by default 100
     """
-    print('\n populating database \n')
+    print("\n populating database \n")
     for records, row in enumerate(df.to_dict(orient="records")):
         latitude, longitude = row["latitude"], row["longitude"]
 
@@ -112,7 +112,7 @@ def create_records(num=99):
             )
         )
         if num and records == num:
-            print('\n DONE \n')
+            print("\n DONE \n")
             break
 
 

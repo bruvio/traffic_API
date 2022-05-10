@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+
+  app:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - .:/code
+      - static_data:/vol/web
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - SYSTEM_ENV=PRODUCTION
+      - SECRET_KEY=SECRET_KEY
+      - ALLOWED_HOSTS=127.0.0.1
+  proxy:
+    image: proxy:latest
+    depends_on:
+      - app
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_data:/vol/static
+  db:
+    restart: always
+    image: postgres:12.0-alpine
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+volumes:
+  static_data:
