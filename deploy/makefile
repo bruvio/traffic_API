@@ -50,4 +50,4 @@ tf-workspace-prod:
 
 .PHONY: test
 test:
-	docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py test && flake8"
+	docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py wait_for_db && pytest API/tests"
