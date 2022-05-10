@@ -1,0 +1,6 @@
+db_username       = "username"
+db_password       = "password"
+django_secret_key = "changeme"
+admin             = "admin"
+admin_password    = "secret"
+admin_email       = "admin@admin.com"

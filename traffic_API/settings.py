@@ -27,7 +27,9 @@ SYSTEM_ENV = os.getenv("SYSTEM_ENV", "NOPOSTGRES")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 ALLOWED_HOSTS = []
-ALLOWED_HOSTS.extend(filter(None, os.environ.get("ALLOWED_HOSTS", "").split(",")))
+ALLOWED_HOSTS.extend(
+    filter(None, os.environ.get("ALLOWED_HOSTS", "").split(","))
+)
 
 
 # Application definition
