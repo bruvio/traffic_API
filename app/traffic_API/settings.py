@@ -23,12 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-SYSTEM_ENV = config("SYSTEM_ENV")
+SYSTEM_ENV = os.getenv("SYSTEM_ENV", "NOPOSTGRES")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ALLOWED_HOSTS = [
-    "*",
-]
+ALLOWED_HOSTS = []
+ALLOWED_HOSTS.extend(filter(None, os.environ.get("ALLOWED_HOSTS", "").split(",")))
 
 
 # Application definition
@@ -82,8 +81,8 @@ WSGI_APPLICATION = "traffic_API.wsgi.application"
 
 if SYSTEM_ENV == "PRODUCTION":
     print(SYSTEM_ENV)
-    DEBUG = True
-    SECRET_KEY = os.environ.get("SECRET_KEY")
+    DEBUG = bool(int(os.environ.get("DEBUG", 0)))
+    SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "changeme")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",

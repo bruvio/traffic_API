@@ -3,7 +3,7 @@ LABEL maintainer="bruno.viola@pm.me"
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV PATH="/scripts:${PATH}"
+
 
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
@@ -22,7 +22,7 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 RUN apk del .tmp-build-deps
 
-
+ENV PATH="/scripts:${PATH}"
 
 
 RUN mkdir /code
