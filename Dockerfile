@@ -42,5 +42,5 @@ RUN chown -R user:user /vol/
 RUN chmod -R 755 /vol/web
 USER user
 VOLUME /vol/web
-RUN pip install pytest pytest-cov pytest-django
+
 CMD ["entrypoint.sh"]
