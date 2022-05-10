@@ -6,11 +6,12 @@ authors = ["bruvio <bruno.viola@pm.me>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = "^4.0.4"
+Django = "3.2.8"
 djangorestframework = "^3.13.1"
 django-filter = "^21.1"
 psycopg2-binary = "^2.9.3"
 python-decouple = "^3.6"
+pandas = "^1.4.2"
 
 
 [tool.poetry.dev-dependencies]
@@ -23,7 +24,6 @@ pep8-naming = "^0.12.1"
 pytest-cov = "^3.0.0"
 pytest-django = "^4.5.2"
 pytest-flake8 = "^1.1.1"
-pandas = "^1.4.2"
 
 
 [build-system]

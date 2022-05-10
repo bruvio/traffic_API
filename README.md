@@ -13,3 +13,13 @@ I will Create (and deploy) a web service/API that allows a user to navigate this
 - The API structure is up to you
 - Use Python or Node.js
 - Use postgres for the database if you decide to use one
+
+docker-compose build (takes lots of time to build numpy and pandas wheels!)
+
+docker-compose up
+<!-- docker-compose run app sh -c "pytest API/tests/ " -->
+poetry export -f requirements.txt --output requirements.txt
+
+
+
+https://github.com/99designs/aws-vault#installing

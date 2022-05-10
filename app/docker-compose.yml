@@ -10,7 +10,7 @@ services:
       - POSTGRES_DB=app
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  web:
+  app:
     restart: always
     build:
       dockerfile: Dockerfile
@@ -28,7 +28,16 @@ services:
       - DB_PASS=postgres
       - SYSTEM_ENV=PRODUCTION
       - SECRET_KEY=SECRET_KEY
-    command: ./run.sh
+      - ADMIN_EMAIL=admin@admin.com
+      - ADMIN_PASSWORD=secret
+      - ADMIN=admin
+      - DEBUG=1
+    command: >
+      sh -c "python manage.py wait_for_db &&
+             python manage.py makemigrations &&
+             python manage.py migrate &&
+             python import_csv.py &&
+             python manage.py runserver 0.0.0.0:8000"
 volumes:
   postgres_data:
     driver: local
