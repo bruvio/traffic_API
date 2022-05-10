@@ -24,7 +24,7 @@ from API.models import (
     StartJunction,
 )
 
-df = pd.read_csv("data/input_data.csv")
+df = pd.read_csv("traffic_data.csv")
 
 
 def create_records(num=99):
