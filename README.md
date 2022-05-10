@@ -85,7 +85,7 @@ if all the commands run successfully.
 you are ready to run terraform.
 
 Before doing so it is necessary to store as env variables AWS credentials.
-I choose to use `aws-vault` as provides additional security creating ephemeral credentials that last maximum 12h.
+I choose to use [aws-vault](https://github.com/99designs/aws-vault) as provides additional security creating ephemeral credentials that last maximum 12h.
 
 In my case I will run
 
@@ -107,4 +107,8 @@ The `apply` command will create resources.
 
 
 A deployment can also be triggered using the Gitlab CI. Here the user can tag releases and branches.
+
+if everything is successfull you can access the API at 
+`api.<workspace>.<yourdns>.net`
+
 
