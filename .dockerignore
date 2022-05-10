@@ -18,3 +18,15 @@ README.md
 vol/
 deploy/
 data/
+django_proxy/
+proxy/
+.venv/
+.pytest_cache/
+.qt_for_python/
+.coverage
+aws_scripts.sh
+db.sqlite3
+docker-task.sh
+data_explore.ipynb
+Wards_(May_2021)_UK_BFE.geojson
+Road traffic statistics - About.pdf

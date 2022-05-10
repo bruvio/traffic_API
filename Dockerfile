@@ -30,7 +30,9 @@ WORKDIR /code
 
 COPY . /code/
 
-RUN chmod +x ./scripts/*
+COPY ./scripts/ /scripts/
+RUN chmod +x /scripts/*
+
 
 RUN mkdir -p /vol/web/media
 RUN mkdir -p /vol/web/static
