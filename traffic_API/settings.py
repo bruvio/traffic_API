@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 from socket import gethostbyname, gethostname
+
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +28,9 @@ SYSTEM_ENV = os.getenv("SYSTEM_ENV", "PRODUCTION")
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "changeme")
 # SECURITY WARNING: don't run with debug turned on in production!
 ALLOWED_HOSTS = []
-ALLOWED_HOSTS.extend(filter(None, os.environ.get("ALLOWED_HOSTS", "").split(",")))
+ALLOWED_HOSTS.extend(
+    filter(None, os.environ.get("ALLOWED_HOSTS", "").split(","))
+)
 if os.environ.get("AWS_EXECUTION_ENV"):
     ALLOWED_HOSTS.append(gethostbyname(gethostname()))
 
