@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 
 
 # set up the psycopg2
-RUN python -c "import pandas as pd; print(pd.__version__)"
+RUN python -c "import pandas as pd; print('Pandas version is ',pd.__version__)"
 
 COPY ./requirements.txt /requirements.txt
 RUN apk add --update --no-cache postgresql-client jpeg-dev
