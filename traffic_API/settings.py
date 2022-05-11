@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-SYSTEM_ENV = os.getenv("SYSTEM_ENV", "NOPOSTGRES")
+SYSTEM_ENV = os.getenv("SYSTEM_ENV", "PRODUCTION")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 ALLOWED_HOSTS = []
