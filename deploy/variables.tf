@@ -1,5 +1,5 @@
 variable "prefix" {
-  default = "raad"
+  default = "traffic"
 }
 variable "project" {
   default = "traffic-Django-restAPI-AWS"
