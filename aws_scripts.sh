@@ -136,5 +136,3 @@ aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-docume
 
 echo "\n updating $aws_ci_user_name user poicies to allow s3 use"
 aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/aws-policies/TrafficAppApi-CI-customdns-policies.json --set-as-default
-
-

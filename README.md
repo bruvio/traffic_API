@@ -10,7 +10,7 @@ I will Create (and deploy) a web service/API that allows a user to navigate this
 
 
 Requires
-- [poetry](https://python-poetry.org/docs/) - also a requirement file is provided just in case to speed up things 
+- [poetry](https://python-poetry.org/docs/) - also a requirement file is provided just in case to speed up things
 - [docker](https://docs.docker.com/get-docker/)
 - [docker-compose](https://docs.docker.com/compose/install/)
 
@@ -29,7 +29,7 @@ The app can be either run locally or inside a docker container.
 
 A `Dockerfile` and a `docker-compose` files are provided.
 
-I created a nginx proxy that can be used as Django's built-in webserver is not designed for production use.
+I created a nginx proxy (a gitsubmodule is provided in the repo) that can be used as Django's built-in webserver is not designed for production use.
 Nginx is designed to be fast, efficient, and secure, so it's a better choice to handle incoming web requests when your website is on the public Internet and thus subject to large amounts of traffic (if you're lucky and your site takes off)
 
 ## run the code
@@ -40,7 +40,7 @@ to run the code first create a virtual environment. I used [poetry](https://pyth
 poetry install
 poetry shell
 ```
-or if you prefer 
+or if you prefer
 
 ```
 python -m venv .venv
@@ -92,7 +92,7 @@ or you can choose to export
 
 
 To make life easy in the `deploy` folder there is a makefile with some alias to run terraform commands.
-Without going into the details. 
+Without going into the details.
 The users has to create a workspace (dev, staging, prod ...), initialize, plan and apply.
 
 The `apply` command will create resources.
@@ -100,7 +100,26 @@ The `apply` command will create resources.
 
 A deployment can also be triggered using the Gitlab CI, a `.gitlab-ci.yml` is provided in the repo. Here the user can tag releases and branches.
 
-if everything is successfull you can access the API at 
+if everything is successful you can access the API at
 `api.<workspace>.<yourdns>.net`
 
 
+
+
+
+
+## Further development
+
+The API at this stage assumes that the input data (a large 170MB file) is stored inside the container/local filesystem. There is room to improvement.
+
+For example:
+
+1) the data could be stored in S3 and be accessed from there
+2) better if the data could be ingested creating a lambda function that check for changes in S3 and then populate a DynamoDB table, used down along the line to store columnar data ready to be pushed in RDS database.
+3) another way could be to create an data ingestion pipeline using Firehose and storing again into S3.
+
+
+Another area of improvement can be the Django models and Filters. at this stage I create a set of simple models to characterize the data. Many columns have been left aside and are not used. So framing in a different way the models could improve the overall filtering and counting capabilities of the API.
+
+
+Finally, the API at this stage is public. The Terraform architecture is already providing a bastion host for admin access. So in the future one could think of implementing an user model into the Django app to regulate access and expose only certain counting features or filters leaving admin or other super-users with private endpoints.
