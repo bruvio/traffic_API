@@ -8,17 +8,14 @@ The links below all give information on traffic count and major road data.
 
 I will Create (and deploy) a web service/API that allows a user to navigate this data.
 
-- The data is public so no authentication is required
-- We will test it with one or more of python, javascript and curl
-- The API structure is up to you
-- Use Python or Node.js
-- Use postgres for the database if you decide to use one
 
 Requires
-- [poetry](https://python-poetry.org/docs/)
+- [poetry](https://python-poetry.org/docs/) - also a requirement file is provided just in case to speed up things 
 - [docker](https://docs.docker.com/get-docker/)
 - [docker-compose](https://docs.docker.com/compose/install/)
 
+**BEWARE
+the following guide assumes the user is able to decide what is best for them and how to operate with scripts, errors, debugging etcetera. This is not by all means a polished up code!!**
 
 
 ## RUN the code locally
@@ -51,7 +48,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The first time is necessary to build the Docker image
+The first time is necessary to build the Docker image. I provide a script (`docker-task.sh`) that can help speed up building,running and pushing to AWS images. The user can feel free to explore that script (there is a help provided) or just run:
 
 
 `docker-compose build` (takes lots of time to build numpy and pandas wheels!)
@@ -75,14 +72,9 @@ docker-compose run --rm app sh -c "python manage.py wait_for_db && pytest API/te
 ## Deployment to AWS
 
 to deploy to AWS I chose to use Gitlab CI and terraform in conjunction with docker.
-to do so I created a little script with a set of instruction to create policies, users, and some resources that the infrastructure needs.
+to do so I created a little script in the file `./aws_scripts.sh` with a set of instruction to create policies, users, and some resources that the infrastructure needs.
 
-
-just run `./aws_scripts.sh`
-
-
-if all the commands run successfully.
-you are ready to run terraform.
+After those are created and you have published to AWS ECR the images of the proxy and the app you are ready to run terraform.
 
 Before doing so it is necessary to store as env variables AWS credentials.
 I choose to use [aws-vault](https://github.com/99designs/aws-vault) as provides additional security creating ephemeral credentials that last maximum 12h.
@@ -106,7 +98,7 @@ The users has to create a workspace (dev, staging, prod ...), initialize, plan a
 The `apply` command will create resources.
 
 
-A deployment can also be triggered using the Gitlab CI. Here the user can tag releases and branches.
+A deployment can also be triggered using the Gitlab CI, a `.gitlab-ci.yml` is provided in the repo. Here the user can tag releases and branches.
 
 if everything is successfull you can access the API at 
 `api.<workspace>.<yourdns>.net`
