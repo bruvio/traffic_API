@@ -1,4 +1,4 @@
-FROM bruvio/alpine-postgres-pandas-numpy:3.8.12
+FROM bruvio/alpine-postgres-pandas-numpy:poetry
 LABEL maintainer="bruno.viola@pm.me"
 
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -7,19 +7,20 @@ ENV PYTHONUNBUFFERED 1
 
 # set up the psycopg2
 RUN python -c "import pandas as pd; print('\n \n Pandas version is ',pd.__version__)"
+RUN mkdir /code
+WORKDIR /code
 
-COPY ./requirements.txt /requirements.txt
+COPY . /code/
 
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-interaction --no-ansi
+
 
 
 ENV PATH="/scripts:${PATH}"
 
 
-RUN mkdir /code
-WORKDIR /code
 
-COPY . /code/
 
 COPY ./scripts/ /scripts/
 RUN chmod +x /scripts/*

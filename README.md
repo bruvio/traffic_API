@@ -51,7 +51,17 @@ pip install -r requirements.txt
 **BEWARE
 the project requires pandas. The docker image I am currently using contains already Pandas v1.4.2 but if you are not running the app inside a container remember to intall pandas! **
 
+to build this image run
 
+```
+docker build -f Dockerfile-postgres-pandas-numpy.dockerfile -t <image-name>:<tag> .
+docker tag alpine-postgres-pandas-numpy:poetry bruvio/alpine-postgres-pandas-numpy:poetry
+docker login
+
+docker push <your-username>/<image-name>:<tag>
+
+
+```
 
 The first time is necessary to build the Docker image. I provide a script (`docker-task.sh`) that can help speed up building,running and pushing to AWS images. The user can feel free to explore that script (there is a help provided) or just run:
 

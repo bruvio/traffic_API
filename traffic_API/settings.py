@@ -98,41 +98,11 @@ if SYSTEM_ENV == "PRODUCTION":
         }
     }
 
-elif SYSTEM_ENV == "GITHUB_WORKFLOW":
-    print(SYSTEM_ENV)
-    DEBUG = True
-    SECRET_KEY = "TESTING_KEY"
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "github_actions",
-            "USER": "postgres",
-            "PASSWORD": "postgres",
-            "HOST": "127.0.0.1",
-            "PORT": "5432",
-        }
-    }
-
-
-elif SYSTEM_ENV == "DEVELOPMENT":
-    print(SYSTEM_ENV)
-    DEBUG = True
-    SECRET_KEY = "DEVELOP_KEY"
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": config("DB_NAME"),
-            "USER": config("POSTGRES_LOCAL_USER"),
-            "PASSWORD": config("POSTGRES_LOCAL_PASSWORD"),
-            "HOST": config("DB_HOST"),
-            "PORT": "5432",
-        }
-    }
 
 elif SYSTEM_ENV == "NOPOSTGRES":
     print(SYSTEM_ENV)
     DEBUG = True
-    SECRET_KEY = config("SECRET_KEY")
+    SECRET_KEY = os.environ.get("SECRET_KEY")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -175,8 +145,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = "static/"
-
+STATIC_URL = "/static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

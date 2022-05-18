@@ -22,9 +22,7 @@ from rest_framework.routers import DefaultRouter
 from API import views
 
 router = DefaultRouter()
-router.get_api_root_view().cls.__doc__ = '<a href="{}">A (Django) RESTful API providing traffic data count and major road data.</a>'.format(
-    "https://github.com/bruvio/traffic_API"
-)
+
 
 router.register(r"count", views.CountViewSet)
 
