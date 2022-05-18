@@ -1,5 +1,7 @@
 # flake8: noqa
 import os
+import urllib.request
+import zipfile
 
 import django
 import pandas as pd
@@ -24,7 +26,25 @@ from API.models import (
     StartJunction,
 )
 
-df = pd.read_csv("traffic_data.csv")
+url = "https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/dft_traffic_counts_aadf_by_direction.zip"
+filehandle, _ = urllib.request.urlretrieve(url)
+
+
+import fnmatch
+
+# read data from the csv file
+with zipfile.ZipFile(filehandle, "r") as zipped_files:
+
+    # get list of files in zip
+    file_list = zipped_files.namelist()
+    # use fnmatch.filter to get the csv file
+    csv_file = fnmatch.filter(file_list, "*.csv")[0]
+
+    # get the csv data
+    data = zipped_files.open(csv_file, "r")
+
+# read into dataframe
+df = pd.read_csv(data)
 
 
 def create_records(num=99):

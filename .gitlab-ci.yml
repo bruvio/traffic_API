@@ -29,7 +29,7 @@ Test and Lint:
 Validate Terraform:
   stage: Test and Lint
   script:
-    - cd deploy/
+    - cd deploy/terraform
     - terraform init -backend=false
     - terraform validate
     - terraform fmt -check
@@ -56,7 +56,7 @@ Build and Push:
 Staging Plan:
   stage: Staging Plan
   script:
-    - cd deploy/
+    - cd deploy/terraform/
     - export TF_VAR_ecr_image_api=$ECR_REPO:$CI_COMMIT_SHORT_SHA
     - terraform init
     - terraform workspace select staging || terraform workspace new staging
@@ -68,7 +68,7 @@ Staging Plan:
 Staging Apply:
   stage: Staging Apply
   script:
-    - cd deploy/
+    - cd deploy/terraform/
     - export TF_VAR_ecr_image_api=$ECR_REPO:$CI_COMMIT_SHORT_SHA
     - terraform init
     - terraform workspace select staging
@@ -79,7 +79,7 @@ Staging Apply:
 Production Plan:
   stage: Production Plan
   script:
-    - cd deploy/
+    - cd deploy/terraform/
     - export TF_VAR_ecr_image_api=$ECR_REPO:$CI_COMMIT_SHORT_SHA
     - terraform init
     - terraform workspace select production || terraform workspace new production
@@ -91,7 +91,7 @@ Production Plan:
 Production Apply:
   stage: Production Apply
   script:
-    - cd deploy/
+    - cd deploy/terraform/
     - export TF_VAR_ecr_image_api=$ECR_REPO:$CI_COMMIT_SHORT_SHA
     - terraform init
     - terraform workspace select production
@@ -103,7 +103,7 @@ Production Apply:
 Staging Destroy:
   stage: Destroy
   script:
-    - cd deploy/
+    - cd deploy/terraform/
     - terraform init
     - terraform workspace select staging
     - terraform destroy -auto-approve
@@ -115,7 +115,7 @@ Staging Destroy:
 Production Destroy:
   stage: Destroy
   script:
-    - cd deploy/
+    - cd deploy/terraform/
     - terraform init
     - terraform workspace select production
     - terraform destroy -auto-approve
