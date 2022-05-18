@@ -7,6 +7,11 @@ import django
 import pandas as pd
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "traffic_API.settings")
+os.environ.setdefault("SYSTEM_ENV", "NOPOSTGRES")
+os.environ.setdefault(
+    "SECRET_KEY",
+    "django-insecure-w=jp7h*^7occppycw4l6a*&ja%#=0_#_qwr=_&krq8e@@m*dkm",
+)
 django.setup()
 
 
