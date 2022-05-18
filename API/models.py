@@ -57,9 +57,6 @@ class Direction(models.Model):
         return self.name
 
 
-models.CASCADE
-
-
 class RoadInfo(models.Model):
     road = models.ForeignKey(RoadName, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

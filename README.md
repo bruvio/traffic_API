@@ -119,8 +119,23 @@ if everything is successful you can access the API at
 `api.<workspace>.<yourdns>.net`
 
 
+## API usage
+### browser
+once the url is opened a user can filter data clicking on the filter button and then use the dropdown menu or input **case sensitive** strings in the line edit menus.
+###curl
 
 
+curl -X GET <host>/count/?road__category__name=TA" -H "accept: application/json"
+or any combination of the following:
+```
+        road__road__name,
+        date__year,
+        location__count_point_ref,
+        road__category__name,
+        road__junc_start__name,
+        road__junc_end__name,
+        road__direction__name,
+```
 
 
 ## Further development

@@ -18,6 +18,7 @@ class CountViewSet(viewsets.ReadOnlyModelViewSet):
         "count_method__basic_count_method",
         "count_method__detailed_count_method",
         "location",
+        "road__direction",
         "road__category",
         "road__junc_start",
         "road__junc_end",
@@ -27,4 +28,5 @@ class CountViewSet(viewsets.ReadOnlyModelViewSet):
         "road__category__name",
         "road__junc_start__name",
         "road__junc_end__name",
+        "road__direction__name",
     )

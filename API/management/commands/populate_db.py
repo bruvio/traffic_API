@@ -39,6 +39,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--num", type=str)
+        parser.add_argument("--print", type=str)
 
     def handle(self, *args, **options):
         db_conn = None
@@ -52,6 +53,8 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("\n Database available!\n"))
         self.stdout.write("\n Populating database...\n")
         num = int(options["num"])
+        print_data = options["print"]
+
         with zipfile.ZipFile(filehandle, "r") as zipped_files:
 
             # get list of files in zip
@@ -134,12 +137,12 @@ class Command(BaseCommand):
                 hgvs_5_articulated_axle=row["hgvs_5_articulated_axle"],
                 hgvs_6_articulated_axle=row["hgvs_6_articulated_axle"],
             )
-
-            print(
-                "row n {} - road name {} longitude {}, latitude {}".format(
-                    records, road_name_obj.name, longitude, latitude
+            if print_data.lower() == "true":
+                print(
+                    "row n {} - road name {} longitude {}, latitude {}".format(
+                        records, road_name_obj.name, longitude, latitude
+                    )
                 )
-            )
             if int(num) and records == int(num):
                 print("\n DONE \n")
                 break
