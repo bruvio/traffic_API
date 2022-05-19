@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "traffic API"
+version = "0.1.0"
+description = "a web service/API that allows a user to navigate traffic data."
+authors = ["bruvio <bruno.viola@pm.me>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "3.2.8"
+djangorestframework = "^3.13.1"
+django-filter = "^21.1"
+psycopg2-binary = "^2.9.3"
+python-decouple = "^3.6"
+uWSGI = "^2.0.20"
+
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+flake8 = "^4.0.1"
+isort = "^5.10.1"
+pytest = "^7.1.2"
+pre-commit = "^2.19.0"
+pep8-naming = "^0.12.1"
+pytest-cov = "^3.0.0"
+pytest-django = "^4.5.2"
+pytest-flake8 = "^1.1.1"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+
+
+[tool.isort]
+ensure_newline_before_comments = true
+force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 79
+multi_line_output = 3
+profile = 'black'
+use_parentheses = true
+
+[tool.black]
+line-length = 79
+
+[tool.pytest.ini_options]
+addopts = '-s -v'
+DJANGO_SETTINGS_MODULE = "traffic_API.settings"
+
+[tool.mypy]
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
