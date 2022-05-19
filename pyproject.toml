@@ -46,7 +46,7 @@ use_parentheses = true
 line-length = 79
 
 [tool.pytest.ini_options]
-addopts = '-s -v --cov-report=html --cov-report=term --cov-report=xml:cov.xml --cov=API'
+addopts = '-s -v'
 DJANGO_SETTINGS_MODULE = "traffic_API.settings"
 
 [tool.mypy]

@@ -4,5 +4,6 @@ export SECRET_KEY='django-insecure-w=jp7h*^7occppycw4l6a*&ja%#=0_#_qwr=_&krq8e@@
 python manage.py wait_for_db
 python3 manage.py makemigrations API
 python3 manage.py migrate
-python manage.py populate_db --num 999 --print true
+python manage.py populate_db --num 10 --print true
+pytest API/tests
 python3 manage.py runserver 0.0.0.0:8000

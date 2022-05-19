@@ -137,6 +137,24 @@ or any combination of the following:
         road__direction__name,
 ```
 
+### populate AWS Postgres database
+
+Upon deployment the database will be empty.
+it can be populated using the bastion host
+
+user can use the keypair generated prior to ssh into the instance (or use the AWS console).
+```
+$(aws ecr get-login --no-include-email --region <your-aws-region>)
+docker run -it \
+    -e DB_HOST=<DB_HOST> \
+    -e DB_NAME=<DB_NAME> \
+    -e DB_USER=<DB_USER> \
+    -e DB_PASS=<DB_PASS> \
+    <ECR_REPO>:latest \
+
+    sh -c "python manage.py populate_db --num 999 --print True"
+
+```
 
 ## Further development
 

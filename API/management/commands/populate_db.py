@@ -38,8 +38,8 @@ class Command(BaseCommand):
     """Django command to pause execution until database is available"""
 
     def add_arguments(self, parser):
-        parser.add_argument("--num", type=str, default=None)
-        parser.add_argument("--print", type=str)
+        parser.add_argument("--num", type=int, default=0)
+        parser.add_argument("--print", type=str,default='false')
 
     def handle(self, *args, **options):
         db_conn = None
