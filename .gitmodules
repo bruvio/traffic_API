@@ -1,3 +1,6 @@
 [submodule "django_proxy"]
 	path = django_proxy
 	url = git@gitlab.com:bruvio/django_proxy.git
+[submodule "proxy"]
+	path = proxy
+	url = https://github.com/bruvio/django_proxy
