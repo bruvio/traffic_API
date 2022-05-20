@@ -1,0 +1,40 @@
+name: Terraform destroy
+
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The version you want to destroy.'
+        required: true
+jobs:
+
+  destroy:
+    name: 'Terraform destroy'
+    runs-on: ubuntu-latest
+    # Set the working directory to main for the config files
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./deploy/terraform/
+    steps:
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+            terraform_version: 1.0.5
+
+      - name: Terraform destroy production
+        id: destroy-staging
+        if: ${{ github.ref != 'refs/heads/production' }}
+        run: |
+          terraform init
+          terraform workspace select staging
+          terraform destroy -auto-approve
+      - name: Terraform destroy stagin
+        id: destroy-production
+        if: ${{ github.ref == 'refs/heads/production' }}
+        run: |
+          terraform init
+          terraform workspace select production
+          terraform destroy -auto-approve
+
