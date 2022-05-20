@@ -76,7 +76,8 @@ jobs:
             export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.vars.outputs.sha_short }}
             terraform init
             terraform workspace select staging || terraform workspace new staging 
-            terraform plan -no-color -lock=false
+            terraform force-unlock --force 307d9e43-b5a4-0a3e-2168-0a312e4f861f
+            terraform plan -no-color 
 
         - name: Terraform Production Plan
           id: prod-plan
@@ -86,6 +87,7 @@ jobs:
             export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.vars.outputs.sha_short }}
             terraform init
             terraform workspace select production || terraform workspace new production 
+            terraform force-unlock --force
             terraform plan -no-color
 
         - name: add-plan-comment
