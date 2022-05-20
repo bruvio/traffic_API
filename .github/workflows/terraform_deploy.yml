@@ -31,27 +31,49 @@ jobs:
         # Checkout the repository to the GitHub Actions runner
         - name: Checkout
           uses: actions/checkout@v2
-
+        - name: Set outputs
+          id: vars
+          run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        - name: Check outputs
+          run: echo ${{ steps.vars.outputs.sha_short }}
         # Install the preferred version of Terraform CLI 
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v1
           with:
             terraform_version: 1.0.10
+
         - name: Terraform Init
           id: init
           run: terraform init -backend=false
+          
         - name: Terraform Validate
           id: Validate
           run: terraform validate
+
         - name: Terraform Format
           id: Format
           run: terraform fmt -check
 
-        - name: Terraform Plan
+        - name: Terraform Staging Plan
           id: plan
-          if: ${{ github.ref == 'refs/heads/master' }}
+          if: ${{ github.ref != 'refs/heads/production' }}
           # if: github.event_name == 'pull_request'
-          run: terraform plan -no-color
+          run: |
+            export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+            terraform init
+            terraform workspace select staging || terraform workspace new staging 
+            terraform plan -no-color
+
+        - name: Terraform Production Plan
+          id: plan
+          if: ${{ github.ref == 'refs/heads/production' }}
+          # if: github.event_name == 'pull_request'
+          run: |
+            export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+            terraform init
+            terraform workspace select production || terraform workspace new production 
+            terraform plan -no-color
+
         - name: add-plan-comment
           id: comment
           uses: actions/github-script@v3
@@ -81,6 +103,18 @@ jobs:
                 repo: context.repo.repo,
                 body: output
                 })
-        - name: Terraform Apply
-          if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-          run: terraform apply -auto-approve
+        - name: Terraform Staging Apply
+          if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production'
+          run: |
+          export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+          terraform init
+          terraform workspace select staging
+          terraform apply -auto-approve
+
+        - name: Terraform Production Apply
+          if: github.ref == 'refs/heads/production'
+          run: |
+          export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+          terraform init
+          terraform workspace select production
+          terraform apply -auto-approve
