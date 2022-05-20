@@ -49,12 +49,14 @@ jobs:
 
         - name: Terraform Plan
           id: plan
-          if: github.event_name == 'pull_request'
+          if: ${{ github.ref != 'refs/heads/master' }}
+          # if: github.event_name == 'pull_request'
           run: terraform plan -no-color
         - name: add-plan-comment
           id: comment
           uses: actions/github-script@v3
-          if: github.event_name == 'pull_request'
+          if: ${{ github.ref != 'refs/heads/master' }}
+          # if: github.event_name == 'pull_request'
           env:
             PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
           with:
@@ -80,5 +82,5 @@ jobs:
                 body: output
                 })
         - name: Terraform Apply
-          if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+          if: github.ref == 'refs/heads/master' && github.event_name == 'push'
           run: terraform apply -auto-approve
