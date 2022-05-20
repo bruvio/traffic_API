@@ -3,8 +3,12 @@ name: 'Terraform'
 on:
   push:
     branches:
-    - develop
+      - '*'
+    tags:
+      - 'v*.*.*'
   pull_request:
+    branches:
+      - ['master','production','*-release']
 env:
   TF_LOG: INFO
 permissions:
