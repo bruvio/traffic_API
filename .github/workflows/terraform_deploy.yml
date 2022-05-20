@@ -5,10 +5,13 @@ on:
     branches:
       - '*'
     tags:
-      - 'v*.*.*'
+       - '*-release'
   pull_request:
     branches:
-      - ['master','production','*-release']
+      - 'master'
+      - 'production'
+      - '*-release'
+
 env:
   TF_LOG: INFO
 permissions:
