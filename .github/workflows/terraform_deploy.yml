@@ -36,6 +36,17 @@ jobs:
           run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
         - name: Check outputs
           run: echo ${{ steps.vars.outputs.sha_short }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
         # Install the preferred version of Terraform CLI 
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v1
@@ -55,21 +66,23 @@ jobs:
           run: terraform fmt -check
 
         - name: Terraform Staging Plan
-          id: plan
+          id: stag-plan
           if: ${{ github.ref != 'refs/heads/production' }}
           # if: github.event_name == 'pull_request'
           run: |
-            export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
+            export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.vars.outputs.sha_short }}
             terraform init
             terraform workspace select staging || terraform workspace new staging 
             terraform plan -no-color
 
         - name: Terraform Production Plan
-          id: plan
+          id: prod-plan
           if: ${{ github.ref == 'refs/heads/production' }}
           # if: github.event_name == 'pull_request'
           run: |
-            export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+            export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.vars.outputs.sha_short }}
             terraform init
             terraform workspace select production || terraform workspace new production 
             terraform plan -no-color
@@ -80,7 +93,7 @@ jobs:
           if: ${{ github.ref == 'refs/heads/master' }}
           # if: github.event_name == 'pull_request'
           env:
-            PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+            PLAN: "terraform\n${{ steps.prod-plan.outputs.stdout }}"
           with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
             script: |
