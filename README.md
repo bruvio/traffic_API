@@ -18,7 +18,7 @@ Requires
 the following guide assumes the user is able to decide what is best for them and how to operate with scripts, errors, debugging etcetera. This is not by all means a polished up code!!**
 
 
-## RUN the code locally
+## RUN the code 
 
 I created a Jupyter-Notebook `data_explore` that allows to visualize a bit the input data contained in `traffic_data.csv`
 from here I defined a few models that allow to count and filter the data.
@@ -27,12 +27,11 @@ from here I defined a few models that allow to count and filter the data.
 
 The app can be either run locally or inside a docker container.
 
-A `Dockerfile` and a `docker-compose` files are provided.
 
-I created a nginx proxy (a gitsubmodule is provided in the repo) that can be used as Django's built-in webserver is not designed for production use.
-Nginx is designed to be fast, efficient, and secure, so it's a better choice to handle incoming web requests when your website is on the public Internet and thus subject to large amounts of traffic (if you're lucky and your site takes off)
 
-## run the code
+
+
+### install dependancies
 
 to run the code first create a virtual environment. I used [poetry](https://python-poetry.org/docs/) to manage dependencies.
 
@@ -51,7 +50,13 @@ pip install -r requirements.txt
 **BEWARE
 the project requires pandas. The docker image I am currently using contains already Pandas v1.4.2 but if you are not running the app inside a container remember to intall pandas! **
 
-to build this image run
+### run inside Docker container
+A `Dockerfile` and a `docker-compose` files are provided.
+
+I created a nginx proxy (a gitsubmodule is provided in the repo) that can be used as Django's built-in webserver is not designed for production use.
+Nginx is designed to be fast, efficient, and secure, so it's a better choice to handle incoming web requests when your website is on the public Internet and thus subject to large amounts of traffic (if you're lucky and your site takes off)
+
+The first time is necessary to build the Docker image. 
 
 ```
 docker build -f Dockerfile-postgres-pandas-numpy.dockerfile -t <image-name>:<tag> .
@@ -63,7 +68,7 @@ docker push <your-username>/<image-name>:<tag>
 
 ```
 
-The first time is necessary to build the Docker image. I provide a script (`docker-task.sh`) that can help speed up building,running and pushing to AWS images. The user can feel free to explore that script (there is a help provided) or just run:
+I also provide a script (`docker-task.sh`) that can help speed up building,running and pushing to AWS images. The user can feel free to explore that script (there is a help provided) or just run:
 
 
 `docker-compose build` (takes lots of time to build numpy and pandas wheels!)
@@ -82,6 +87,21 @@ to run tests
 ```
 docker-compose run --rm app sh -c "python manage.py wait_for_db && pytest API/tests"
 ```
+
+The database the very first time the app is run will be empty. To populate it
+
+```
+docker-compose -f docker-compose-proxy.yml run  --rm app sh -c "python manage.py populate_db --num 1000 --print True"
+```
+This will read the input data from its remote location and populate the db with the first 1000 rows. An informative output will be shown on the terminal.
+
+
+###
+it is also possible to run the app without using Docker. After setting up the local enviroment just run:
+```
+./run.sh
+```
+this will make migration, apply them, run unit tests, populate the database and run the app.
 
 
 ## Deployment to AWS

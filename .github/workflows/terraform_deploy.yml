@@ -76,7 +76,7 @@ jobs:
             export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.vars.outputs.sha_short }}
             terraform init
             terraform workspace select staging || terraform workspace new staging 
-            terraform plan -no-color
+            terraform plan -no-color -lock=false
 
         - name: Terraform Production Plan
           id: prod-plan
