@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: 'Terraform old'
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terraform old'
     runs-on: ubuntu-latest
 
     # Set the working directory to main for the config files
