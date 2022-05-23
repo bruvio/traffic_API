@@ -3,10 +3,6 @@ name: Terraform destroy
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'The version you want to destroy.'
-        required: true
 jobs:
 
   destroy:

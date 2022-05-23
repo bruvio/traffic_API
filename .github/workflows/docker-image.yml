@@ -2,10 +2,6 @@ name: Publish image
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'The version you want to build.'
-        required: true
   push:
     branches:
       - 'master'
