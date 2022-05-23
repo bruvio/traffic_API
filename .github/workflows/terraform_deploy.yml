@@ -76,20 +76,20 @@ jobs:
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
           # if: github.event_name == 'pull_request'
           run: |
-            export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.vars.outputs.sha_short }}
+            export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:dev
             terraform init
             terraform workspace select staging || terraform workspace new staging 
-            terraform plan -no-color  -lock=false
+            terraform plan   -lock=false
 
         - name: Terraform Production Plan
           id: prod-plan
           if: ${{ github.ref == 'refs/heads/production' }}
           # if: github.event_name == 'pull_request'
           run: |
-            export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.vars.outputs.sha_short }}
+            export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest
             terraform init
             terraform workspace select production || terraform workspace new production 
-            terraform plan -no-color -lock=false
+            terraform plan  -lock=false
 
         - name: add-plan-comment
           id: comment
