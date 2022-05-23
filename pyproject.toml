@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "traffic API"
-version = "0.1.0"
+version = "1.0.1"
 description = "a web service/API that allows a user to navigate traffic data."
 authors = ["bruvio <bruno.viola@pm.me>"]
 
