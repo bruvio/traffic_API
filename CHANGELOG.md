@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.1]
 
-first stable version with 
+first stable version with
 
 <!--
     Added for new features.

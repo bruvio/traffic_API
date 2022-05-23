@@ -25,6 +25,7 @@ def test_wait_for_db(ts):
         call_command("wait_for_db")
         assert gi.call_count == 6
 
+
 # def test_populate_database():
 #     with patch("django.db.utils.ConnectionHandler.__getitem__") as gi:
 #         gi.return_value = True

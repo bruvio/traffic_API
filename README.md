@@ -18,7 +18,7 @@ Requires
 the following guide assumes the user is able to decide what is best for them and how to operate with scripts, errors, debugging etcetera. This is not by all means a polished up code!!**
 
 
-## RUN the code 
+## RUN the code
 
 I created a Jupyter-Notebook `data_explore` that allows to visualize a bit the input data contained in `traffic_data.csv`
 from here I defined a few models that allow to count and filter the data.
@@ -56,7 +56,7 @@ A `Dockerfile` and a `docker-compose` files are provided.
 I created a nginx proxy (a gitsubmodule is provided in the repo) that can be used as Django's built-in webserver is not designed for production use.
 Nginx is designed to be fast, efficient, and secure, so it's a better choice to handle incoming web requests when your website is on the public Internet and thus subject to large amounts of traffic (if you're lucky and your site takes off)
 
-The first time is necessary to build the Docker image. 
+The first time is necessary to build the Docker image.
 
 ```
 docker build -f Dockerfile-postgres-pandas-numpy.dockerfile -t <image-name>:<tag> .
