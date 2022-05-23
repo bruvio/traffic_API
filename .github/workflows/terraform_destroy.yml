@@ -33,4 +33,3 @@ jobs:
           terraform init
           terraform workspace select production
           terraform destroy -auto-approve
-
