@@ -8,7 +8,8 @@ on:
         required: true
   push:
     branches:
-      - '*'
+      - 'master'
+      - 'develop'
     tags:
       - '*-release'
   pull_request:
