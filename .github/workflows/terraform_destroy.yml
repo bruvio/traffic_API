@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  destroy:
-    name: 'Terraform destroy'
+  terraform:
+    name: "Terraform"
     runs-on: ubuntu-latest
     # Set the working directory to main for the config files
     defaults:
@@ -31,10 +31,6 @@ jobs:
         with:
           terraform_version: 1.0.5
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-            terraform_version: 1.0.5
 
       - name: Terraform destroy staging
         id: destroy-staging
@@ -46,7 +42,7 @@ jobs:
             terraform init
             terraform workspace select staging
             terraform destroy -auto-approve -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
-      - name: Terraform destroy production 
+      - name: Terraform destroy production
         id: destroy-production
         if: ${{ github.ref == 'refs/heads/production' }}
         env:
