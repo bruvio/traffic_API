@@ -53,17 +53,10 @@ jobs:
         env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
-            django_secret_key: ${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}
-            admin: ${{ secrets.TF_VAR_ADMIN }}
-            admin_email: ${{ secrets.TF_VAR_ADMIN_EMAIL }}
-            admin_password: ${{ secrets.TF_VAR_ADMIN_PASSWORD }}
-            db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
-            db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
         run: |
-         export ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:dev
-         terraform init
-         terraform workspace select staging || terraform workspace new staging
-         terraform plan -no-color -input=false
+            terraform init
+            terraform workspace select staging || terraform workspace new staging
+            terraform plan -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"  -no-color -input=false
         continue-on-error: true
 
       - uses: actions/github-script@v6
