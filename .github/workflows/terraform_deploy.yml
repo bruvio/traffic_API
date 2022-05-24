@@ -13,7 +13,7 @@ on:
     branches:
       - 'master'
       - 'production'
-      - '*-release'
+      - '*release*'
 
 env:
   TF_LOG: INFO
@@ -34,6 +34,9 @@ jobs:
         # Checkout the repository to the GitHub Actions runner
         - name: Checkout
           uses: actions/checkout@v2
+        - name: GitHub ref
+          id: refs
+          run: echo "github.ref"
         - name: Set outputs
           id: vars
           run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
@@ -70,7 +73,7 @@ jobs:
 
         - name: Terraform Staging Plan
           id: stag-plan
-          if: ${{ github.ref != 'refs/heads/production' }}
+          if: github.ref == 'refs/heads/master' || github.ref == 'ref/heads/production' || github.ref == 'ref/heads/*release*'
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}

@@ -29,7 +29,7 @@ variable "ecr_image_proxy" {
 }
 
 variable "django_secret_key" {
-  description = "Secret key for Django app"
+  description = "Secret key for the Django app"
 }
 variable "admin" {
   description = "admin name"

@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.0.2] - 2022-05-24
+
 ## [v1.0.1] - 2022-05-23
 
 ## [0.0.1]
 
-first stable version with 
+first stable version with
 
 <!--
     Added for new features.
@@ -22,6 +24,8 @@ first stable version with
     Security in case of vulnerabilities.
 -->
 
-[Unreleased]: https://github.com/bruvio/traffic_API/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/bruvio/traffic_API/compare/v1.0.2...HEAD
+
+[v1.0.2]: https://github.com/bruvio/traffic_API/compare/v1.0.1...v1.0.2
 
 [v1.0.1]: https://github.com/bruvio/traffic_API/compare/7ff0175fb4c891c6ba01097a60e1b952ec9d78a3...v1.0.1
