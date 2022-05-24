@@ -1,5 +1,5 @@
 [![Publish image](https://github.com/bruvio/traffic_API/actions/workflows/docker-image.yml/badge.svg?branch=develop)](https://github.com/bruvio/traffic_API/actions/workflows/docker-image.yml)
-
+[![Terraform](https://github.com/bruvio/traffic_API/actions/workflows/terraform.yml/badge.svg?branch=develop)](https://github.com/bruvio/traffic_API/actions/workflows/terraform.yml)
 # TRAFFIC API
 
 The links below all give information on traffic count and major road data.
