@@ -88,14 +88,14 @@ jobs:
       - name: Terraform Staging Apply
         if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
         run: |
-          export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+          export TF_VAR_ecr_image_api=$ECR_REPO:dev
           terraform init
           terraform workspace select staging
           terraform apply -auto-approve -input=false
       - name: Terraform Production Apply
         if: github.ref == 'refs/heads/production' && github.event_name == 'push'
         run: |
-          export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+          export TF_VAR_ecr_image_api=$ECR_REPO:latest
           terraform init
           terraform workspace select production
           terraform apply -auto-approve -input=false
