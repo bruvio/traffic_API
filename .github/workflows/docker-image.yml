@@ -127,7 +127,7 @@ jobs:
           IMAGE_TAG: latest
         run: |
           echo  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker tag bruvio/traffic_api:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag bruvio/traffic_api:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
           docker push  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       - name: Tag and push dev image to Amazon ECR
@@ -138,6 +138,6 @@ jobs:
           IMAGE_TAG: dev
         run: |
           echo  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker tag bruvio/traffic_api:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag bruvio/traffic_api:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
           docker push  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
