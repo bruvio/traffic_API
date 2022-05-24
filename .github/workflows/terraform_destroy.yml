@@ -6,7 +6,7 @@ on:
 
 jobs:
   destroy:
-  if: github.ref == 'refs/heads/master' || github.ref == 'ref/heads/production' || github.ref == 'ref/heads/*release*'
+    if: github.ref == 'refs/heads/master' || github.ref == 'ref/heads/production'
     name: "Terraform destroy"
     runs-on: ubuntu-latest
     # Set the working directory to main for the config files
