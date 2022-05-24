@@ -1,18 +1,19 @@
-name: Terraform destroy
+name: "Terraform destroy"
 
 
 on:
   workflow_dispatch:
 
 jobs:
-  terraform:
-    name: "Terraform"
+  destroy:
+    name: "Terraform destroy"
     runs-on: ubuntu-latest
     # Set the working directory to main for the config files
     defaults:
       run:
         shell: bash
         working-directory: ./deploy/terraform/
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -38,7 +39,7 @@ jobs:
         env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
-       run: |
+        run: |
             terraform init
             terraform workspace select staging
             terraform destroy -auto-approve -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
@@ -48,7 +49,7 @@ jobs:
         env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
-       run: |
+        run: |
             terraform init
             terraform workspace select production
             terraform destroy -auto-approve -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
