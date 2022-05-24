@@ -5,9 +5,10 @@ on:
   push:
     branches:
       - master
+      - develop
+      - production
   pull_request:
-      types:
-      - closed
+
 
 jobs:
   terraform:
@@ -34,7 +35,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          # terraform_version: 0.13.0:
+          terraform_version: 1.0.5
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Format
@@ -94,7 +95,7 @@ jobs:
           export TF_VAR_ecr_image_api=$ECR_REPO:dev
           terraform init
           terraform workspace select staging
-          terraform apply -auto-approve -input=false
+          terraform apply -auto-approve -input=false -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
       - name: Terraform Staging Apply
         if: github.event.pull_request.merged == true
         run: |
@@ -102,7 +103,7 @@ jobs:
           export TF_VAR_ecr_image_api=$ECR_REPO:dev
           terraform init
           terraform workspace select staging
-          terraform apply -auto-approve -input=false
+          terraform apply -auto-approve -input=false -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
       - name: Terraform Production Apply
         if: github.ref == 'refs/heads/production' && github.event_name == 'push'
         run: |
@@ -110,7 +111,7 @@ jobs:
           export TF_VAR_ecr_image_api=$ECR_REPO:latest
           terraform init
           terraform workspace select production
-          terraform apply -auto-approve -input=false
+          terraform apply -auto-approve -input=false -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
       - name: Terraform Production Apply
         if: github.event.pull_request.merged == true
         run: |
@@ -118,4 +119,4 @@ jobs:
           export TF_VAR_ecr_image_api=$ECR_REPO:latest
           terraform init
           terraform workspace select production
-          terraform apply -auto-approve -input=false
+          terraform apply -auto-approve -input=false -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
