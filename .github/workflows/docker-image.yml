@@ -135,8 +135,8 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
-          IMAGE_TAG: dev
-        run: |
+          IMAGE_TAG: $(git rev-parse --short "$GITHUB_SHA")
+        run: | 
           echo  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag bruvio/traffic_api:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
