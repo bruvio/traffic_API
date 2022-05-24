@@ -12,9 +12,11 @@ I will Create (and deploy) a web service/API that allows a user to navigate this
 
 
 Requires
-- [poetry](https://python-poetry.org/docs/) - also a requirement file is provided just in case to speed up things
+- [poetry](https://python-poetry.org/docs/) 
 - [docker](https://docs.docker.com/get-docker/)
 - [docker-compose](https://docs.docker.com/compose/install/)
+- [AWS account](https://aws.amazon.com/resources/create-account/)
+- [AWS hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html)
 
 **BEWARE
 the following guide assumes the user is able to decide what is best for them and how to operate with scripts, errors, debugging etcetera. This is not by all means a polished up code!!**
@@ -33,7 +35,7 @@ The app can be either run locally or inside a docker container.
 
 
 
-### install dependancies
+### install dependencies
 
 to run the code first create a virtual environment. I used [poetry](https://python-poetry.org/docs/) to manage dependencies.
 
@@ -46,7 +48,7 @@ or if you prefer
 ```
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+poetry install
 ```
 
 **BEWARE
@@ -62,23 +64,24 @@ The first time is necessary to build the Docker image.
 
 ```
 docker build -f Dockerfile-postgres-pandas-numpy.dockerfile -t <image-name>:<tag> .
-docker tag alpine-postgres-pandas-numpy:poetry bruvio/alpine-postgres-pandas-numpy:poetry
+docker tag <image-name>:<tag> <your-username>/<image-name>:<tag>
 docker login
 
 docker push <your-username>/<image-name>:<tag>
 
 
 ```
+edit `Dockerfile` so it can point to `<your-username>/<image-name>:<tag>`
 
-I also provide a script (`docker-task.sh`) that can help speed up building,running and pushing to AWS images. The user can feel free to explore that script (there is a help provided) or just run:
+
+I also provide a script (`docker-task.sh`) that can help speed up building, running and pushing to AWS images. The user can feel free to explore that script (there is a help provided) or just run:
 
 
-`docker-compose build` (takes lots of time to build numpy and pandas wheels!)
-then
+`docker-compose build` and then
 
 `docker-compose up`
 
-and finally open a browser and navigate to `localhost:8000`
+and finally open a browser and navigate to `127.0.0.0:8000`
 
 if you prefer to run locally simulating the production environment with the proxy run
 `docker-compose -f docker-compose-proxy.yml up` and then navigate to
@@ -99,7 +102,7 @@ This will read the input data from its remote location and populate the db with 
 
 
 ###
-it is also possible to run the app without using Docker. After setting up the local enviroment just run:
+it is also possible to run the app without using Docker. After setting up the local environment just run:
 ```
 ./run.sh
 ```
@@ -108,8 +111,11 @@ this will make migration, apply them, run unit tests, populate the database and 
 
 ## Deployment to AWS
 
-to deploy to AWS I chose to use Gitlab CI and terraform in conjunction with docker.
+to deploy to AWS I chose to use Gitlab CI (the repo also contains Github workflows if the users prefers that) and terraform in conjunction with docker.
 to do so I created a little script in the file `./aws_scripts.sh` with a set of instruction to create policies, users, and some resources that the infrastructure needs.
+
+This script needs to be run once and before deploying to AWS.
+
 
 After those are created and you have published to AWS ECR the images of the proxy and the app you are ready to run terraform.
 
@@ -127,8 +133,25 @@ or you can choose to export
       - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
 ```
 
+Furthermore it is necessary to edit the `deploy/terrafor/variables.tf` file and change
+```
+variable "dns_zone_name" {
+  description = "Domain name"
+  default     = "<yourdomain>"
+}
+variable "ecr_image_api" {
+  description = "ECR Image for API"
+  default     = "<youraccountid>.dkr.ecr.us-east-1.amazonaws.com/traffic-django-restapi-app:latest"
+}
 
-To make life easy in the `deploy` folder there is a makefile with some alias to run terraform commands.
+variable "ecr_image_proxy" {
+  description = "ECR Image for API"
+  default     = "<youraccountid>.dkr.ecr.us-east-1.amazonaws.com/traffic-django-restapi-proxy:latest"
+}
+```
+
+
+To make life easy in the repo there is a makefile with some alias to run terraform commands.
 Without going into the details.
 The users has to create a workspace (dev, staging, prod ...), initialize, plan and apply.
 
@@ -138,7 +161,7 @@ The `apply` command will create resources.
 A deployment can also be triggered using the Gitlab CI, a `.gitlab-ci.yml` is provided in the repo. Here the user can tag releases and branches.
 
 if everything is successful you can access the API at
-`api.<workspace>.<yourdns>.net`
+`api.<workspace>.<yourdns>`
 
 
 ## API usage
