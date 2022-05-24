@@ -12,7 +12,7 @@ on:
     branches:
       - 'master'
       - 'production'
-      - '*-release'
+      - '*release*'
 
 jobs:
   build-and-test:
