@@ -6,6 +6,8 @@ on:
     branches:
       - master
   pull_request:
+      types:
+      - closed
 
 jobs:
   terraform:
@@ -38,7 +40,7 @@ jobs:
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
-
+github.event_name == 
       - name: Terraform Init
         id: init
         run: terraform init -backend=false
@@ -88,6 +90,15 @@ jobs:
       - name: Terraform Staging Apply
         if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
         run: |
+          echo \n push on develop branch \n
+          export TF_VAR_ecr_image_api=$ECR_REPO:dev
+          terraform init
+          terraform workspace select staging
+          terraform apply -auto-approve -input=false
+      - name: Terraform Staging Apply
+        if: github.event.pull_request.merged == true
+        run: |
+          echo \n The PR was merged \n 
           export TF_VAR_ecr_image_api=$ECR_REPO:dev
           terraform init
           terraform workspace select staging
@@ -95,6 +106,15 @@ jobs:
       - name: Terraform Production Apply
         if: github.ref == 'refs/heads/production' && github.event_name == 'push'
         run: |
+          echo \n push on production branch \n
+          export TF_VAR_ecr_image_api=$ECR_REPO:latest
+          terraform init
+          terraform workspace select production
+          terraform apply -auto-approve -input=false
+      - name: Terraform Production Apply
+        if: github.event.pull_request.merged == true
+        run: |
+          echo \n The PR was merged \n 
           export TF_VAR_ecr_image_api=$ECR_REPO:latest
           terraform init
           terraform workspace select production
