@@ -53,14 +53,14 @@ jobs:
         env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
-            django_secret_key: ${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}
-            admin: ${{ secrets.TF_VAR_ADMIN }}
-            admin_email: ${{ secrets.TF_VAR_ADMIN_EMAIL }}
-            admin_password: ${{ secrets.TF_VAR_ADMIN_PASSWORD }}
-            db_username: ${{ secrets.TF_VAR_DB_USERNAME }}
-            db_password: ${{ secrets.TF_VAR_DB_PASSWORD }}
+            TF_VAR_DJANGO_SECRET_KEY: ${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}
+            TF_VAR_ADMIN: ${{ secrets.TF_VAR_ADMIN }}
+            TF_VAR_ADMIN_EMAIL: ${{ secrets.TF_VAR_ADMIN_EMAIL }}
+            TF_VAR_ADMIN_PASSWORD: ${{ secrets.TF_VAR_ADMIN_PASSWORD }}
+            TF_VAR_DB_USERNAME: ${{ secrets.TF_VAR_DB_USERNAME }}
+            TF_VAR_DB_PASSWORD: ${{ secrets.TF_VAR_DB_PASSWORD }}
         run: |
-         export ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:dev
+         export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:dev
          terraform init
          terraform workspace select staging || terraform workspace new staging
          terraform plan -no-color -input=false
