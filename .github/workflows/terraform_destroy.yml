@@ -39,14 +39,20 @@ jobs:
       - name: Terraform destroy staging
         id: destroy-staging
         if: ${{ github.ref != 'refs/heads/staging' }}
-        run: |
+        env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
+       run: |
           terraform init
           terraform workspace select staging
-          terraform destroy -auto-approve
-      - name: Terraform destroy production
+          terraform destroy -auto-approve -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
+      - name: Terraform destroy production 
         id: destroy-production
         if: ${{ github.ref == 'refs/heads/production' }}
-        run: |
+        env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
+       run: |
           terraform init
           terraform workspace select production
-          terraform destroy -auto-approve
+          terraform destroy -auto-approve -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
