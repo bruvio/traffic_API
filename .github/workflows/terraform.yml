@@ -151,9 +151,8 @@ jobs:
 
           docker push  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-  terraform:
-    needs: push-container-to-ecr
-    name: "Terraform"
+  terraform-plan:
+    name: "Terraform init/fmt/plan"
     runs-on: ubuntu-latest
     # Set the working directory to main for the config files
     defaults:
@@ -229,6 +228,34 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
+
+  terraform-apply:
+    needs: push-container-to-ecr
+    name: "Terraform apply"
+    runs-on: ubuntu-latest
+    # Set the working directory to main for the config files
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./deploy/terraform/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.5
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       - name: Terraform Staging Apply
         if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
         env:
