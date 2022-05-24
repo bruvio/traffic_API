@@ -19,14 +19,14 @@ jobs:
         with:
             terraform_version: 1.0.5
 
-      - name: Terraform destroy production
+      - name: Terraform destroy staging
         id: destroy-staging
-        if: ${{ github.ref != 'refs/heads/production' }}
+        if: ${{ github.ref != 'refs/heads/staging' }}
         run: |
           terraform init
           terraform workspace select staging
           terraform destroy -auto-approve
-      - name: Terraform destroy stagin
+      - name: Terraform destroy production
         id: destroy-production
         if: ${{ github.ref == 'refs/heads/production' }}
         run: |
