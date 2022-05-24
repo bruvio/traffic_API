@@ -12,7 +12,7 @@ I will Create (and deploy) a web service/API that allows a user to navigate this
 
 
 Requires
-- [poetry](https://python-poetry.org/docs/) 
+- [poetry](https://python-poetry.org/docs/)
 - [docker](https://docs.docker.com/get-docker/)
 - [docker-compose](https://docs.docker.com/compose/install/)
 - [AWS account](https://aws.amazon.com/resources/create-account/)
