@@ -53,17 +53,10 @@ jobs:
         env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
-            TF_VAR_DJANGO_SECRET_KEY: ${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}
-            TF_VAR_ADMIN: ${{ secrets.TF_VAR_ADMIN }}
-            TF_VAR_ADMIN_EMAIL: ${{ secrets.TF_VAR_ADMIN_EMAIL }}
-            TF_VAR_ADMIN_PASSWORD: ${{ secrets.TF_VAR_ADMIN_PASSWORD }}
-            TF_VAR_DB_USERNAME: ${{ secrets.TF_VAR_DB_USERNAME }}
-            TF_VAR_DB_PASSWORD: ${{ secrets.TF_VAR_DB_PASSWORD }}
         run: |
-         export TF_VAR_ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:dev
-         terraform init
-         terraform workspace select staging || terraform workspace new staging
-         terraform plan -no-color -input=false
+            terraform init
+            terraform workspace select staging || terraform workspace new staging
+            terraform plan -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"  -no-color -input=false
         continue-on-error: true
 
       - uses: actions/github-script@v6
@@ -95,14 +88,14 @@ jobs:
       - name: Terraform Staging Apply
         if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
         run: |
-          export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+          export TF_VAR_ecr_image_api=$ECR_REPO:dev
           terraform init
           terraform workspace select staging
           terraform apply -auto-approve -input=false
       - name: Terraform Production Apply
         if: github.ref == 'refs/heads/production' && github.event_name == 'push'
         run: |
-          export TF_VAR_ecr_image_api=$ECR_REPO:${{ steps.vars.outputs.sha_short }}
+          export TF_VAR_ecr_image_api=$ECR_REPO:latest
           terraform init
           terraform workspace select production
           terraform apply -auto-approve -input=false
