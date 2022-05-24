@@ -41,7 +41,7 @@ jobs:
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
-        
+
       - name: Terraform Init
         id: init
         run: terraform init -backend=false
@@ -104,7 +104,7 @@ jobs:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
         run: |
-          echo \n The PR was merged \n 
+          echo \n The PR was merged \n
 
           terraform init
           terraform workspace select staging
@@ -125,7 +125,7 @@ jobs:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
         run: |
-          echo \n The PR was merged \n 
+          echo \n The PR was merged \n
           terraform init
           terraform workspace select production
           terraform apply -auto-approve -input=false -var="ecr_image_api=$ECR_REGISTRY/$ECR_REPOSITORY:latest" -var="db_username=${{ secrets.TF_VAR_DB_USERNAME }}" -var="db_password==${{ secrets.TF_VAR_DB_PASSWORD }}" -var="admin_email=${{ secrets.TF_VAR_ADMIN_EMAIL }}" -var="admin_password=${{ secrets.TF_VAR_ADMIN_PASSWORD }}" -var="admin=${{ secrets.TF_VAR_ADMIN }}" -var="django_secret_key=${{ secrets.TF_VAR_DJANGO_SECRET_KEY }}"
