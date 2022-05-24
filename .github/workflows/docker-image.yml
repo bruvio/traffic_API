@@ -107,19 +107,21 @@ jobs:
           docker image ls -a
 
       - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        uses: actions/checkout@v2if: ${{ github.ref != 'refs/heads/master' }}
+        .AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
+      - name: GitHub ref
+        id: refs
+        run: echo "github.ref"
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
       - name: Tag and push latest image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -131,6 +133,7 @@ jobs:
 
           docker push  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       - name: Tag and push dev image to Amazon ECR
+        if: github.ref == 'refs/heads/master' || github.ref == 'ref/heads/production' || github.ref == 'ref/heads/*release*'
         if: ${{ github.ref != 'refs/heads/master' }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}

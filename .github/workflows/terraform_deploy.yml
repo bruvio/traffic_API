@@ -34,6 +34,9 @@ jobs:
         # Checkout the repository to the GitHub Actions runner
         - name: Checkout
           uses: actions/checkout@v2
+        - name: GitHub ref
+          id: refs
+          run: echo "github.ref"
         - name: Set outputs
           id: vars
           run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
