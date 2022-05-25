@@ -1,16 +1,15 @@
 name: "Terraform"
 
 on:
-  workflow_dispatch:
   push:
     branches:
-      - 'master'
-      - 'develop'
+      - 'production'
     tags:
       -'*release*'
   pull_request:
     branches:
       - 'master'
+      - 'develop'
       - 'production'
       - '*release*'
 
