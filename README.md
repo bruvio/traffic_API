@@ -203,7 +203,7 @@ docker run -it \
 
 ## Further development
 
-The API at this stage assumes that the input data (a large 170MB file) is stored inside the container/local filesystem. There is room to improvement.
+The API at this stage assumes that the input data (a large 170MB file) is read from a remote location. There is room to improvement.
 
 For example:
 
@@ -212,7 +212,7 @@ For example:
 3) another way could be to create an data ingestion pipeline using Firehose and storing again into S3.
 
 
-Another area of improvement can be the Django models and Filters. at this stage I create a set of simple models to characterize the data. Many columns have been left aside and are not used. So framing in a different way the models could improve the overall filtering and counting capabilities of the API.
+Another area of improvement can be the Django models and Filters. At this stage I create a set of simple models to characterize the data. Many columns have been left aside and are not used. So framing in a different way the models could improve the overall filtering and counting capabilities of the API.
 
 
 Finally, the API at this stage is public. The Terraform architecture is already providing a bastion host for admin access. So in the future one could think of implementing an user model into the Django app to regulate access and expose only certain counting features or filters leaving admin or other super-users with private endpoints.
