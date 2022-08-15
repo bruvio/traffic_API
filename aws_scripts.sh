@@ -33,7 +33,7 @@ aws ecr create-repository --repository-name $ECR_app_repo  \
     --image-scanning-configuration scanOnPush=true || echo "\n repository $ECR_app_repo already created"
 echo "\n  Created ECR repository: $ECR_app_repo."
 
-aws iam create-policy --policy-name TrafficAppApi-ProxyCIPushECR --policy-document file://deploy/aws-policies/TrafficAppApi-ProxyCIPushECR.json
+aws iam create-policy --policy-name TrafficAppApi-ProxyCIPushECR --policy-document file://deploy/terraform/aws-policies/TrafficAppApi-ProxyCIPushECR.json || echo "\n policy TrafficAppApi-ProxyCIPushECR already exists"
 echo" \n  Creted IAM user policy TrafficAppApi-ProxyCIPushECR" || echo "\n policy TrafficAppApi-ProxyCIPushECR already exists"
 
 
@@ -41,7 +41,7 @@ policy_arn=$(aws iam list-policies --query 'Policies[?PolicyName==`TrafficAppApi
 
 
 
-aws iam create-user --user-name ${user_name_proxy}
+aws iam create-user --user-name ${user_name_proxy} || echo "\n user ${user_name_proxy}  already exists"
 
 echo "\n created IAM user ${user_name_proxy}"
 
@@ -50,10 +50,10 @@ aws iam attach-user-policy --user-name ${user_name_proxy} --policy-arn ${policy_
 echo "\n attaching IAM policy to user"
 
 
-aws iam create-access-key --user-name ${user_name_proxy}
+aws iam create-access-key --user-name ${user_name_proxy} || echo "\n key for user ${user_name_proxy}  already exists"
 
 # exit
-aws ecr describe-repositories --repository-name traffic-django-restapi
+# aws ecr describe-repositories --repository-name traffic-django-restapi
 
 repoARN=$(aws ecr describe-repositories --query 'repositories[?repositoryName==`traffic-django-restapi-proxy`].repositoryURI' --output text)
 
@@ -86,7 +86,7 @@ aws ec2 run-instances --image-id $(aws ssm get-parameters --names /aws/service/a
 
 
 echo " \n  creating IAM user policy TrafficAppApi-CI"
-aws iam create-policy --policy-name TrafficAppApi-CI --policy-document file://deploy/aws-policies/TrafficAppApi-CI.json
+aws iam create-policy --policy-name TrafficAppApi-CI --policy-document file://deploy/terraform/aws-policies/TrafficAppApi-CI.json  || echo "\n policy TrafficAppApi-CI already exists"
 
 echo "done \n"
 
@@ -98,21 +98,22 @@ policy_id_terraform=$(aws iam list-policies --query 'Policies[?PolicyName==`Traf
 
 echo "\n creating IAM user ${aws_ci_user_name}"
 
-aws iam create-user --user-name ${aws_ci_user_name}
+aws iam create-user --user-name ${aws_ci_user_name} || echo "\n user ${aws_ci_user_name}  already exists"
 
 echo "\n attaching IAM policy to user"
 aws iam attach-user-policy --user-name ${aws_ci_user_name} --policy-arn ${policy_arn_terraform}
 
 
 echo "\n creating access key for ${aws_ci_user_name}"
-aws iam create-access-key --user-name ${aws_ci_user_name}
+aws iam create-access-key --user-name ${aws_ci_user_name} || echo "\n key for user ${aws_ci_user_name}  already exists"
 
 # exit
+aws iam delete-policy-version --policy-arn  $policy_arn_terraform  --version-id v1 
 
 echo "\n updating $aws_ci_user_name user poicies to allow rds"
-aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/aws-policies/TrafficAppApi-CI-rds-policies.json --set-as-default
+aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/terraform/aws-policies/TrafficAppApi-CI-rds-policies.json --set-as-default
 echo "\n updating $aws_ci_user_name user poicies to allow bastion host"
-aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/aws-policies/TrafficAppApi-CI-bastion-policies.json --set-as-default
+aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/terraform/aws-policies/TrafficAppApi-CI-bastion-policies.json --set-as-default
 
 
 echo "\n copy public gitlab ssh key "
@@ -124,7 +125,7 @@ aws ec2 import-key-pair --key-name traffic-app-api-devops-bastion --public-key-m
 
 
 echo "\n updating $aws_ci_user_name user poicies to allow ecs use"
-aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/aws-policies/TrafficAppApi-CI-ecs-policies.json --set-as-default
+aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/terraform/aws-policies/TrafficAppApi-CI-ecs-policies.json --set-as-default
 
 aws iam delete-policy-version --policy-arn  $policy_arn_terraform  --version-id v11
 
@@ -132,7 +133,7 @@ aws iam list-policy-versions --policy-arn $policy_arn_terraform
 
 
 echo "\n updating $aws_ci_user_name user poicies to allow load balancer use"
-aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/aws-policies/TrafficAppApi-CI-loadbalancer-policies.json --set-as-default
+aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/terraform/aws-policies/TrafficAppApi-CI-loadbalancer-policies.json --set-as-default
 
 echo "\n updating $aws_ci_user_name user poicies to allow s3 use"
-aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/aws-policies/TrafficAppApi-CI-customdns-policies.json --set-as-default
+aws iam create-policy-version --policy-arn $policy_arn_terraform --policy-document file://deploy/terraform/aws-policies/TrafficAppApi-CI-customdns-policies.json --set-as-default
