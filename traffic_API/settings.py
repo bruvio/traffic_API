@@ -102,6 +102,7 @@ if SYSTEM_ENV == "PRODUCTION":
 elif SYSTEM_ENV == "NOPOSTGRES":
     print(SYSTEM_ENV)
     DEBUG = True
+    ALLOWED_HOSTS = '*'
     SECRET_KEY = os.environ.get("SECRET_KEY")
     DATABASES = {
         "default": {

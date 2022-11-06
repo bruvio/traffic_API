@@ -68,6 +68,7 @@ class Command(BaseCommand):
         # read into dataframe
         for index, chunk in enumerate(pd.read_csv(data, chunksize=1)):
             for records, row in enumerate(chunk.to_dict(orient="records")):
+                row = dict((k.lower(), v) for k, v in row.items())
                 latitude, longitude = row["latitude"], row["longitude"]
 
                 road_name_obj, _ = RoadName.objects.get_or_create(
