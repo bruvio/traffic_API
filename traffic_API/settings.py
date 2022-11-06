@@ -11,6 +11,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+
 import os
 from pathlib import Path
 from socket import gethostbyname, gethostname
@@ -157,7 +158,7 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
 }
 S3_STORAGE_BACKEND = bool(int(os.environ.get("S3_STORAGE_BACKEND", 1)))
-if S3_STORAGE_BACKEND is True:
+if S3_STORAGE_BACKEND:
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 AWS_DEFAULT_ACL = "public-read"
