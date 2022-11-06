@@ -6,4 +6,4 @@ python3 manage.py makemigrations API
 python3 manage.py migrate
 python manage.py populate_db --num 10 --print true
 pytest API/tests
-python3 manage.py runserver 0.0.0.0:8000
+python3 manage.py runserver 0.0.0.0:8001

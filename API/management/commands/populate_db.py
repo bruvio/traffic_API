@@ -67,7 +67,8 @@ class Command(BaseCommand):
 
         # read into dataframe
         for index, chunk in enumerate(pd.read_csv(data, chunksize=1)):
-            for records, row in enumerate(chunk.to_dict(orient="records")):
+            for row in chunk.to_dict(orient="records"):
+                row = {k.lower(): v for k, v in row.items()}
                 latitude, longitude = row["latitude"], row["longitude"]
 
                 road_name_obj, _ = RoadName.objects.get_or_create(
@@ -141,10 +142,9 @@ class Command(BaseCommand):
                 )
                 if print_data.lower() == "true":
                     print(
-                        "row n {} - road name {} longitude {}, latitude {}".format(
-                            index, road_name_obj.name, longitude, latitude
-                        )
+                        f"row n {index} - road name {road_name_obj.name} longitude {longitude}, latitude {latitude}"
                     )
-            if num and index == int(num):
+
+            if num and index == num:
                 print("\n DONE \n")
                 break
