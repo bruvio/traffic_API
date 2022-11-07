@@ -210,7 +210,7 @@ For example:
 1) the data could be stored in S3 and be accessed from there
 2) better if the data could be ingested creating a lambda function that check for changes in S3 and then populate a DynamoDB table, used down along the line to store columnar data ready to be pushed in RDS database.
 3) another way could be to create an data ingestion pipeline using Firehose and storing again into S3.
-
+4) allow deployment using CloudFormation (application won't work with current templates)
 
 Another area of improvement can be the Django models and Filters. At this stage I create a set of simple models to characterize the data. Many columns have been left aside and are not used. So framing in a different way the models could improve the overall filtering and counting capabilities of the API.
 
