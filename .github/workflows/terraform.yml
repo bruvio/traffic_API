@@ -149,6 +149,18 @@ jobs:
           docker tag bruvio/traffic_api:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
           docker push  $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  tfsec:
+    name: tfsec
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@master
+      - name: tfsec
+        uses: aquasecurity/tfsec-action@v1.0.2
+        with:
+          soft_fail: true
+          working_directory : ./deploy/terraform
 
   terraform-plan:
     name: "Terraform init/fmt/plan"
