@@ -62,7 +62,7 @@ scan:
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   script:
     - cd deploy/terraform/
-    - tfsec --tfvars-file tomsdev.tfvars  -f junit --out tfsec.out.xml --soft-fail --minimum-severity HIGH
+    - tfsec --tfvars-file sample.tfvars  -f junit --out tfsec.out.xml --soft-fail --minimum-severity HIGH
   only:
     refs:
       - merge_requests
