@@ -8,6 +8,7 @@ image:
 stages:
   - Test and Lint
   - Build and Push
+  - Scan
   - Staging Plan
   - Staging Apply
   - Production Plan
@@ -52,7 +53,24 @@ Build and Push:
     - docker push $ECR_REPO:latest
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^(master|production)$/'
-
+scan:
+  stage: scan
+  image:
+    name: aquasec/tfsec-ci:v1.15
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  script:
+    - cd deploy/terraform/
+    - tfsec --tfvars-file tomsdev.tfvars  -f junit --out tfsec.out.xml --soft-fail --minimum-severity HIGH
+  only:
+    refs:
+      - merge_requests
+  artifacts:
+    reports:
+      junit: "tfsec.out.xml"
+    paths:
+      - "tfsec.out.xml"
 Staging Plan:
   stage: Staging Plan
   script:
